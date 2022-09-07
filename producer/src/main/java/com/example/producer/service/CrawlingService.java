@@ -1,6 +1,7 @@
 package com.example.producer.service;
 
 import com.example.producer.dto.Stock;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,12 +15,10 @@ import java.util.List;
 @Slf4j
 @Service
 public class CrawlingService {
-
-    public Elements getNAVERFinanceCrawlingResult() throws Exception {
+    public List<Stock> getNAVERFinanceCrawlingResult() throws Exception {
         Document doc = Jsoup.connect("https://finance.naver.com/sise/lastsearch2.nhn").get();
         Elements elements = doc.getElementsByClass("type_5");
-        convertElementsToObject(elements.select("tbody tr"));
-        return elements.select("tbody tr");
+        return convertElementsToObject(elements.select("tbody tr"));
     }
 
     private List<Stock> convertElementsToObject(Elements elements) {
