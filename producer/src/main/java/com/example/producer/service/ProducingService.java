@@ -18,16 +18,13 @@ public class ProducingService {
 
     private final KafkaTemplate<String, Stock> kafkaTemplate;
 
-    private final CrawlingService crawlingService;
-
     @Autowired
-    public ProducingService(KafkaTemplate kafkaTemplate, CrawlingService crawlingService) {
+    public ProducingService(KafkaTemplate kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-        this.crawlingService = crawlingService;
     }
 
-    public Boolean produceNAVERFinanceCrawlingResult() throws Exception {
-        return produce(crawlingService.getNAVERFinanceCrawlingResult());
+    public Boolean produceNAVERFinanceCrawlingResult(List<Stock> stockList) throws Exception {
+        return produce(stockList);
     }
 
     public Boolean produce(List<Stock> stockList) {

@@ -24,7 +24,8 @@ public class MainController {
     @RequestMapping(value="/produceOnce", method = RequestMethod.GET)
     @ResponseBody
     public Boolean produceOnce() throws Exception{
-        return producingService.produceNAVERFinanceCrawlingResult();
+        return producingService.produceNAVERFinanceCrawlingResult(
+                crawlingService.getNAVERFinanceCrawlingResult());
     }
 
     @RequestMapping(value="/crawlOnce", method = RequestMethod.GET)
