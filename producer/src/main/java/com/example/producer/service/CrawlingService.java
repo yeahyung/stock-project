@@ -55,6 +55,8 @@ public class CrawlingService {
                     .build();
             stockList.add(stock);
         }
+
+        log.info("stock crawled list: " + stockList);
         return stockList;
     }
 }

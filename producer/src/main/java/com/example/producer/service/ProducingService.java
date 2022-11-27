@@ -23,7 +23,7 @@ public class ProducingService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public Boolean produceNAVERFinanceCrawlingResult(List<Stock> stockList) throws Exception {
+    public Boolean produceNAVERFinanceCrawlingResult(List<Stock> stockList) {
         return produce(stockList);
     }
 
