@@ -1,5 +1,6 @@
 package com.example.consumer.consume;
 
+import com.example.consumer.dto.Stock;
 import com.example.consumer.service.ConsumerService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

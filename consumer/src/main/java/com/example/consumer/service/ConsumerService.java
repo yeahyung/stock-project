@@ -1,5 +1,7 @@
 package com.example.consumer.service;
 
+import com.example.consumer.dto.Stock;
+import com.example.consumer.utils.JsonUtil;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -28,16 +30,17 @@ public class ConsumerService {
         KStream<String, String> messageStream = streamsBuilder
                .stream(kafkaTopic, Consumed.with(STRING_SERDE, STRING_SERDE));
 
-        //messageStream
-                //.flatMapValues(value -> Arrays.asList(value.split(" ")))
-                //.foreach((key, value) -> System.out.println(key + " : " + value));
+        messageStream
+                .foreach((key, value) -> System.out.println(removeNonWords(value)));
+//                .flatMapValues(value -> Arrays.asList(value.split(" ")))
+//                .foreach((key, value) -> System.out.println(key + " : " + value));
                 //.to("test2");
 
-       KTable<String, Long> wordCounts = messageStream
-            .mapValues((ValueMapper<String, String>) String::toLowerCase)
-            .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
-            .groupBy((key, word) -> word, Grouped.with(STRING_SERDE, STRING_SERDE))
-            .count(Materialized.as("counts"));
+//       KTable<String, Long> wordCounts = messageStream
+//            .mapValues((ValueMapper<String, String>) String::toLowerCase)
+//            .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
+//            .groupBy((key, word) -> word, Grouped.with(STRING_SERDE, STRING_SERDE))
+//            .count(Materialized.as("counts"));
 //
 //        wordCounts.toStream()
 //            .foreach((word, count) -> System.out.println("word : " + word + " => count : " + count));
@@ -46,6 +49,12 @@ public class ConsumerService {
 
     @Autowired
     private StreamsBuilderFactoryBean factoryBean;
+
+    // 애초에 produce를 % 제거하고 하는게 좋으나 테스트 용도..
+    private String removeNonWords(String value) {
+        Stock stock = JsonUtil.convertStringToObject(value.replaceAll("%", ""), Stock.class);
+        return JsonUtil.convertObjectToString(stock);
+    }
 
     public Long countWord(String word) {
         KafkaStreams kafkaStreams =  factoryBean.getKafkaStreams();
